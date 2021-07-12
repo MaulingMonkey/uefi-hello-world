@@ -1,0 +1,33 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        // https://en.wikibooks.org/wiki/QEMU/Debugging_with_QEMU
+        // NOTES:
+        //
+        //  QEMU won't boot UEFI by default.  Specifying edk2-x86_64-code.fd first will fix this!
+        //  Ref: https://www.reddit.com/r/virtualization/comments/ifmmnh/qemu_options_for_booting_efi
+        //  Ref: https://github.com/tianocore/edk2
+        //
+        {
+            "name":                     "Debug uefi-hello-world x64",
+            "type":                     "cppdbg",
+            "request":                  "launch",
+            "internalConsoleOptions":   "openOnSessionStart",
+            "console":                  "internalConsole",
+            "program":                  "qemu-system-x86_64w",
+            "args": [
+                "-drive", "if=pflash,format=raw,read-only=on,file=/usr/share/qemu/edk2-x86_64-code.fd",
+                "-drive", "format=raw,file=${workspaceFolder}/target/debug/uefi-hello-world.img"
+            ],
+            "preLaunchTask":    "cargo b",
+            "windows": {
+                "type":     "cppvsdbg",
+                "program":  "C:\\Program Files\\qemu\\qemu-system-x86_64w.exe",
+                "args": [
+                    "-drive", "if=pflash,format=raw,read-only=on,file=C:\\Program Files\\qemu\\share\\edk2-x86_64-code.fd",
+                    "-drive", "format=raw,file=${workspaceFolder}/target/debug/uefi-hello-world.img"
+                ],
+            }
+        },
+    ]
+}

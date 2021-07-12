@@ -1,0 +1,11 @@
+# https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[package]
+name            = "xtask"
+version         = "0.1.0"
+edition         = "2018"
+publish         = false
+
+[dependencies]
+fatfs           = "0.3"
+gpt             = "2"

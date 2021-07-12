@@ -1,0 +1,2 @@
+[alias]
+b = "run --bin xtask -- b"

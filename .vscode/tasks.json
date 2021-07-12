@@ -1,0 +1,16 @@
+{
+    "version": "2.0.0",
+    "type": "shell",
+    "problemMatcher": "$rustc",
+    "presentation": {
+        "clear": true,
+    },
+
+    "tasks": [
+        {
+            "label": "cargo b",
+            "command": "cargo b",
+            "group": { "kind": "build", "isDefault": true }
+        }
+    ]
+}

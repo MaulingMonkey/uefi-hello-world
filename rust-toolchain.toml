@@ -1,0 +1,5 @@
+[toolchain]
+channel     = "nightly-2021-07-08"          # a beta/nightly is required for custom targets
+components  = [ "rust-src" ]                # rust-src is required for -Z build-std=core
+targets     = [ "x86_64-pc-windows-msvc" ]  # We want MSVC style linking tools?
+profile     = "minimal"
