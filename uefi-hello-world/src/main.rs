@@ -2,7 +2,7 @@
 #![no_main]
 #![no_std]
 
-mod intrinsics;
+extern crate rlibc; // force linking for mem{cmp,copy,move,set}
 
 use core::cell::Cell;
 use core::cell::RefCell;
