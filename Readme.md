@@ -50,7 +50,7 @@ rustc +nightly -Z unstable-options --print target-spec-json --target=x86_64-pc-w
 Changed:
 *   The EXE suffix to match what the BIOS / system firmware looks for
 *   Specified an abort panic strategy instead of trying to handle all edge cases
-*   The OS (`cfg!(target_os)`?)
+*   The OS (`cfg!(target_os)`? seems to avoid linking `_fltused`, which is some kind of marker symbol: <https://stackoverflow.com/a/1583220>)
 
 Left alone:
 *   `llvm-target` (not sure what the impact, if any, would be.)
