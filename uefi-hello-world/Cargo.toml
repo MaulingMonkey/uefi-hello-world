@@ -8,3 +8,4 @@ publish         = false
 
 [dependencies]
 wchar           = "0.10"
+uefi            = "0.11"
