@@ -36,69 +36,6 @@ See also pinned versions in:
 
 # Overview
 
-## x86_64-pc-uefi-msvc.json
-
-Rust generally has two targets to worry about at a time: the host environment (build scripts etc.) and the target environment (what you're trying to build.)
-While much of this could be driven by simply by using `RUSTFLAGS` and the like, using a [custom target](https://doc.rust-lang.org/rustc/targets/custom.html)
-lets us specify UEFI specific options separately, where they won't break our host environment.
-
-Initial basis for this file was:
-```
-rustc +nightly -Z unstable-options --print target-spec-json --target=x86_64-pc-windows-msvc
-```
-
-Changed:
-*   The EXE suffix to match what the BIOS / system firmware looks for
-*   Specified an abort panic strategy instead of trying to handle all edge cases
-*   The OS (`cfg!(target_os)`?)
-
-Left alone:
-*   `llvm-target` (not sure what the impact, if any, would be.)
-
-```diff
-   "env": "msvc",
--  "exe-suffix": ".exe",
-+  "exe-suffix": ".efi",
-   "executables": true,
-   "has-elf-tls": true,
-   "is-builtin": true,
-   "is-like-msvc": true,
-   "is-like-windows": true,
-   "linker-flavor": "msvc",
-   "linker-is-gnu": false,
-   "lld-flavor": "link",
-   "llvm-target": "x86_64-pc-windows-msvc",
-+  "panic-strategy": "abort",
-   "max-atomic-width": 64,
-   "no-default-libraries": false,
--  "os": "windows",
-+  "os": "uefi",
-   "pre-link-args": {
-```
-
-Added extra link args:
-*   `/ENTRY:efi_main` - we could've picked something else, but as UEFI's entry point takes UEFI-specific arguments, I'm not comfortable using the default names.
-*   `/Subsystem:EFI_Application` - MSVC has built in support for generating EFI style portable execuables.
-    [`/Subsystem`](https://docs.microsoft.com/en-us/cpp/build/reference/subsystem-specify-subsystem?view=msvc-160) also supports `BOOT_APPLICATION`, compatible with windows's boot loader?
-*   `/NXCOMPAT:NO` - Overriding rust's defaults, this disables [Data Execution Prevention (DEP)](https://docs.microsoft.com/en-us/windows/win32/Memory/data-execution-prevention), since UEFI doesn't support that (will link error if enabled.)
-
-```diff
-+  "post-link-args": {
-+    "lld-link": [
-+      "/ENTRY:efi_main",
-+      "/Subsystem:EFI_Application",
-+      "/NXCOMPAT:NO"
-+    ],
-+    "msvc": [
-+      "/ENTRY:efi_main",
-+      "/Subsystem:EFI_Application",
-+      "/NXCOMPAT:NO"
-+    ]
-+  },
-```
-
-
-
 ## xtask/...
 
 [cargo xtask](https://github.com/matklad/cargo-xtask) style build logic.

@@ -10,7 +10,7 @@ use std::process::Command;
 
 
 fn main() {
-    run("cargo build -Z build-std=core --target=x86_64-pc-uefi-msvc.json --bin uefi-hello-world");
+    run("cargo build -Z build-std=core --target=x86_64-unknown-uefi --bin uefi-hello-world");
     create_imgs();
 }
 
@@ -48,7 +48,7 @@ fn create_efi_system_partition() -> Vec<u8> {
         fs.root_dir().create_dir("EFI").unwrap();
         fs.root_dir().create_dir("EFI/BOOT").unwrap();
 
-        let mut src_efi = File::open("target/x86_64-pc-uefi-msvc/debug/uefi-hello-world.efi").expect("Unable to read uefi-hello-world.efi");
+        let mut src_efi = File::open("target/x86_64-unknown-uefi/debug/uefi-hello-world.efi").expect("Unable to read uefi-hello-world.efi");
         let mut dst_efi = fs.root_dir().create_file("EFI/BOOT/BOOTX64.EFI").expect("Unable to create file");
         std::io::copy(&mut src_efi, &mut dst_efi).unwrap();
     }
