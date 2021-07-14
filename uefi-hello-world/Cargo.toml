@@ -7,5 +7,9 @@ edition         = "2018"
 publish         = false
 
 [dependencies]
+bytemuck        = "1"
 wchar           = "0.10"
 uefi            = "0.11"
+
+[build-dependencies]
+png             = "0.16"
