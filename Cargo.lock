@@ -191,6 +191,12 @@ dependencies = [
 ]
 
 [[package]]
+name = "qemu-exit"
+version = "2.0.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "220eb94f40665452ab6114bf8a8d86aa1fd41c6dbfaa4ab71b5912c8adb80389"
+
+[[package]]
 name = "quote"
 version = "1.0.9"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -256,6 +262,7 @@ dependencies = [
  "png",
  "rlibc",
  "uefi",
+ "uefi-services",
  "wchar",
 ]
 
@@ -268,6 +275,18 @@ dependencies = [
  "proc-macro2",
  "quote",
  "syn",
+]
+
+[[package]]
+name = "uefi-services"
+version = "0.8.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "f5a4d69a19217c0917154283ccef70e4fa7dfd30c7b8c94402ab203f5b892c6d"
+dependencies = [
+ "cfg-if",
+ "log",
+ "qemu-exit",
+ "uefi",
 ]
 
 [[package]]

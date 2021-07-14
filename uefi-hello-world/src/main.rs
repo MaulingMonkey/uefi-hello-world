@@ -1,12 +1,9 @@
+#![feature(abi_efiapi)]
 #![allow(non_camel_case_types)]
 #![no_main]
 #![no_std]
 
 extern crate rlibc; // force linking for mem{cmp,copy,move,set}
-
-use core::cell::Cell;
-use core::cell::RefCell;
-use core::fmt::Write;
 
 use uefi::prelude::*;
 use uefi::CStr16;
@@ -17,21 +14,9 @@ use wchar::wchz;
 
 
 
-struct Global {
-    system_table:   RefCell<Option<SystemTable<Boot>>>,
-    panicing:       Cell<bool>,
-}
+#[entry] fn efi_main(_image_handle: Handle, system_table: SystemTable<Boot>) -> Status {
+    uefi_services::init(&system_table).unwrap().unwrap();
 
-unsafe impl Send for Global {} // XXX
-unsafe impl Sync for Global {} // XXX
-
-static GLOBAL : Global = Global {
-    system_table:   RefCell::new(None),
-    panicing:       Cell::new(false),
-};
-
-#[no_mangle] pub extern "win64" fn efi_main(_image_handle: Handle, system_table: SystemTable<Boot>) -> Status {
-    *GLOBAL.system_table.borrow_mut() = Some(unsafe { system_table.unsafe_clone() });
     system_table.stdout().clear().unwrap().unwrap();
     system_table.stdout().output_string(CStr16::from_u16_with_nul(wchz!("Hello, UEFI!!\r\n")).ok().unwrap()).unwrap().unwrap();
     system_table.stdout().enable_cursor(true).unwrap().unwrap();
@@ -48,20 +33,4 @@ static GLOBAL : Global = Global {
 
     loop {}
     // Status::SUCCESS
-}
-
-#[panic_handler]
-fn panic_handler(_info: &core::panic::PanicInfo) -> ! {
-    let recursive = GLOBAL.panicing.get();
-    GLOBAL.panicing.set(true);
-    let system_table = GLOBAL.system_table.borrow();
-    if let Some(system_table) = system_table.as_ref() {
-        if recursive {
-            let _ = write!(system_table.stdout(), "Panic occured:\r\n<recursive panic trying to display panic info>\r\n");
-        } else {
-            write!(system_table.stdout(), "Panic occured:\r\n{}\r\n", _info).unwrap();
-        }
-        let _ = system_table.stdout().enable_cursor(false);
-    }
-    loop {}
 }

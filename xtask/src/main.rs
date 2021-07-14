@@ -10,7 +10,7 @@ use std::process::Command;
 
 
 fn main() {
-    run("cargo build -Z build-std=core --target=x86_64-unknown-uefi --bin uefi-hello-world");
+    run("cargo build -Z build-std=core,compiler_builtins,alloc --target=x86_64-unknown-uefi --bin uefi-hello-world");
     create_imgs();
 }
 
