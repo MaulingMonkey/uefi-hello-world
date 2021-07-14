@@ -3,8 +3,6 @@
 #![no_main]
 #![no_std]
 
-extern crate rlibc; // force linking for mem{cmp,copy,move,set}
-
 use uefi::prelude::*;
 use uefi::CStr16;
 use uefi::proto::console::gop::BltOp;

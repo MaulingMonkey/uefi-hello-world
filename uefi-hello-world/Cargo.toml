@@ -8,7 +8,6 @@ publish         = false
 
 [dependencies]
 bytemuck        = "1"
-rlibc           = "1"
 wchar           = "0.10"
 uefi            = "0.11"
 uefi-services   = "0.8"
