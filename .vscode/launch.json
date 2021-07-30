@@ -17,7 +17,8 @@
             "program":                  "qemu-system-x86_64w",
             "args": [
                 "-drive", "if=pflash,format=raw,read-only=on,file=/usr/share/qemu/edk2-x86_64-code.fd",
-                "-drive", "format=raw,file=${workspaceFolder}/target/debug/uefi-hello-world.img"
+                "-drive", "format=raw,file=${workspaceFolder}/target/debug/uefi-hello-world.img",
+                "-serial", "stdio",
             ],
             "preLaunchTask":    "cargo b",
             "windows": {
@@ -25,7 +26,16 @@
                 "program":  "C:\\Program Files\\qemu\\qemu-system-x86_64w.exe",
                 "args": [
                     "-drive", "if=pflash,format=raw,read-only=on,file=C:\\Program Files\\qemu\\share\\edk2-x86_64-code.fd",
-                    "-drive", "format=raw,file=${workspaceFolder}/target/debug/uefi-hello-world.img"
+                    "-drive", "format=raw,file=${workspaceFolder}/target/debug/uefi-hello-world.img",
+                    "-serial", "stdio",
+
+                    // https://blogs.oracle.com/linux/post/a-study-of-the-linux-kernel-pci-subsystem-with-qemu
+                    // "-hda", "ol8.qcow2",
+                    //"-device", "pci-bridge,id=bridge0,chassis_nr=1",
+                    //"-device", "virtio-scsi-pci,id=scsi0,bus=bridge0,addr=0x3",
+                    //"-device", "pci-bridge,id=bridge1,chassis_nr=2",
+                    //"-device", "virtio-scsi-pci,id=scsi1,bus=bridge1,addr=0x3",
+                    //"-device", "virtio-scsi-pci,id=scsi2,bus=bridge1,addr=0x4",
                 ],
             }
         },
